@@ -165,9 +165,14 @@ public class SellerDaoJDBC implements SellerDao {
 			st = conn.prepareStatement("SELECT seller.*, department.name as depName FROM seller "
 					+ "INNER JOIN department ON seller.DepartmentId = department.Id ORDER BY seller.Id;");
 			List<Seller> listSeller = new ArrayList<>();
+			Map <Integer, Department> map = new HashMap<>();
 			rs = st.executeQuery();
 			while (rs.next()) {
-				Department dep = instantiateDepartment(rs);
+				Department dep = map.get(rs.getInt("DepartmentId"));
+				if (dep == null) {
+						dep = instantiateDepartment(rs);
+						map.put(dep.getId(), dep);
+				}
 				Seller obj = instantiateSeller(rs, dep);
 				listSeller.add(obj);
 				
