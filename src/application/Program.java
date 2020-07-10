@@ -2,6 +2,7 @@ package application;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import model.dao.DaoFactory;
 import model.dao.SellerDao;
@@ -35,4 +36,9 @@ public class Program {
 	Department department = new Department(2,null);
 	
 	sellerDao.findByDepartment(department).forEach(System.out::println);
+	
+System.out.println("=== Test 3: seller findByDepartment ===");
+Seller newSeller = new Seller (null, "Greg", "Greg@gmail.com", new Date(), 4000.0, department );
+sellerDao.insert(newSeller);
+System.out.println("Inserted! New id = " + newSeller.getId());
 }}
