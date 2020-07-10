@@ -65,8 +65,9 @@ public class SellerDaoJDBC implements SellerDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"UPDATE seller SET Name = ?, Email = ?, BirthDate = ?, BaseSalary=?, DepartmentId = ? WHERE Id = ?",
-					Statement.RETURN_GENERATED_KEYS);
+					"UPDATE seller "
+					+ "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary=?, DepartmentId = ? "
+					+ "WHERE Id = ?;");
 			st.setString(1, seller.getName());
 			st.setString(2, seller.getEmail());
 			st.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
@@ -74,9 +75,7 @@ public class SellerDaoJDBC implements SellerDao {
 			st.setInt(5, seller.getDepartment().getId());
 			st.setInt(6, seller.getId());
 
-			int rows = st.executeUpdate();
-
-			System.out.println("Rows affected: " + rows);
+			st.executeUpdate();
 		}
 
 		catch (SQLException e) {
