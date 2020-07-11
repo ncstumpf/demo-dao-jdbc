@@ -89,19 +89,32 @@ public class SellerDaoJDBC implements SellerDao {
 	}
 
 	@Override
-	public void deleteById(Integer Id) {
-		// TODO Auto-generated method stub
-
+	public void deleteById(Integer id) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM seller WHERE Id = ?");
+			
+			st.setInt(1, id);
+			int rows = st.executeUpdate();
+			if (rows == 0)
+				throw new DbException("Id selected doesn't existe");
+		}
+		catch (SQLException e) {
+			throw new DbException (e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 	}
 
 	@Override
-	public Seller findById(Integer Id) {
+	public Seller findById(Integer id) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement("SELECT seller.*, department.name as depName FROM seller "
 					+ "INNER JOIN department ON seller.DepartmentId = department.Id " + "WHERE seller.Id = ?;");
-			st.setInt(1, Id);
+			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
 				Department dep = instantiateDepartment(rs);
