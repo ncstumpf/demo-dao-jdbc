@@ -62,7 +62,7 @@ public class SellerDaoJDBC implements SellerDao {
 	public void update(Seller seller) {
 
 		PreparedStatement st = null;
-		ResultSet rs = null;
+		
 		try {
 			st = conn.prepareStatement(
 					"UPDATE seller "
@@ -82,7 +82,6 @@ public class SellerDaoJDBC implements SellerDao {
 			throw new DbException(e.getMessage());
 
 		} finally {
-			DB.closeResultSet(rs);
 			DB.closeStatement(st);
 		}
 
@@ -97,7 +96,7 @@ public class SellerDaoJDBC implements SellerDao {
 			st.setInt(1, id);
 			int rows = st.executeUpdate();
 			if (rows == 0)
-				throw new DbException("Id selected doesn't existe");
+				throw new DbException("Selected Id doesn't exist");
 		}
 		catch (SQLException e) {
 			throw new DbException (e.getMessage());
